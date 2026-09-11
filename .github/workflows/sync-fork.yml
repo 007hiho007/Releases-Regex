@@ -12,3 +12,8 @@ jobs:
       - run: gh repo sync ${{ github.repository }} --source Vidhin05/Releases-Regex
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+      - name: Discord-Hinweis bei fehlgeschlagenem Sync
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" -d '{"content": "⚠️ Sync mit Vidhin05 Original ist fehlgeschlagen – vermutlich Konflikt mit deiner eigenen Änderung. Bitte manuell prüfen."}' "${{ secrets.DISCORD_WEBHOOK_URL }}"
